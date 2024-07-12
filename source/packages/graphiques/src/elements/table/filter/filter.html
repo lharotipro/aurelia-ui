@@ -1,0 +1,33 @@
+<template>
+  <require from="./filter.css"></require>
+  <button ref="dropdownButtonElement"
+    class=" ${filterType == 'table' ? 'btn btn-outline table-btn col-auto' : 'float-end btn p-1 pt-0'}" type="button"
+    id="filterDropdown_${uniqueId}" click.delegate="toggleDropdown()" aria-expanded.bind="isDropdownOpen"
+    data-bs-toggle="dropdown" data-bs-auto-close="false">
+    <i class=" bi fs-6 ${(column.filterValue.length > 0 || column.filterValue === false || column.filterValue === true ) && column.filteredColumn == column.field ? 'bi-funnel-fill' : 'bi-funnel'}"
+      style="cursor: pointer;"></i> ${typeFiltre == 'table' ? 'Filtrer' : ''}
+  </button>
+  <ul ref="dropdownMenuElement" class="dropdown-menu" style="background-color: #f8f9fa;">
+    <form class="px-2 py-1 ">
+      <simple-select if.bind="typeFiltre == 'table' && columns.length > 0 && columnsToDisplay.length > 0" class="mb-3"
+        id="filterSelect_${uniqueId}" placeholder="Sélectionnez une colonne ..." value-Key="header" label-key="header"
+        datasource.bind="columnsToDisplay" value.bind="selectedColumn">
+        <template replace-part="itemTemplate">
+          <div class="d-flex justify-content-between flex-nowrap">
+            <div class="fw-semibold m-0">${item.header}</div>
+          </div>
+        </template>
+      </simple-select>
+      <div if.bind="typeFiltre == 'table' && columns.length > 0 && columnsToDisplay.length == 0"
+        class="fw-semibold m-0 mb-2">Aucune colonne filtrable trouvée</div>
+      <hr if.bind="column && column.type && typeFiltre == 'table'">
+      <compose if.bind="column && column.type" view-model="./filter-type-column/${column.type}-filter"
+        model.bind="{column :  column , uniqueId : uniqueId }"></compose>
+      <button id="Btn_apply_${uniqueId}"
+        class="btn btn-primary mt-2 float-end ${(column.filterValue.length > 0 || column.filterValue == true  || column.filterValue == false) ? '' : 'disabled'}"
+        click.delegate="applyFilter(column)">Appliquer</button>
+      <button id="Btn_clear_${uniqueId}" class=" ${(column.filterValue.length > 0 || column.filterValue == true  || column.filterValue == false && column.filteredColumn.length > 0) ? '' : 'disabled'} btn btn-light mt-2 float-start "
+        click.delegate="clearFilter()">Effacer</button>
+    </form>
+  </ul>
+</template>

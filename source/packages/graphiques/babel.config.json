@@ -1,0 +1,26 @@
+{
+  "presets":[
+     [
+        "@babel/preset-env",
+        {
+           "debug":false,
+           "useBuiltIns":"usage",
+           "corejs":3.37,
+           "exclude":[
+              "es.array.push"
+           ],
+           "include":[
+              "@babel/plugin-transform-class-properties"
+           ]
+        }
+     ]
+  ],
+  "plugins":[
+     [
+        "@babel/plugin-proposal-decorators",
+        {
+           "version":"legacy"
+        }
+     ]
+  ]
+}

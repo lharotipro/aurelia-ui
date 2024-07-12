@@ -1,0 +1,276 @@
+<template>
+  <require from="bootstrap/dist/css/bootstrap.css"></require>
+  <require from="bootstrap-icons/font/bootstrap-icons.css"></require>
+  <div class="container-fluid text-center">
+    <h1 class="text-center mt-5 badge bg-primary">@als/aurelia_ui</h2>
+      <h3 class="text-center mt-1">This is the dev app for plugin</h3>
+  </div>
+  <lock locked.bind="booleanValue"></lock>
+  <environment-ribbon if.bind="environment && environment.type != 'prod'" environment.one-time="environment"
+    class="d-none d-md-block" position="top-left"></environment-ribbon>
+  <div class="container-fluid ">
+         
+    <div class="card accordion mt-4" id="accordionExample">
+      <div class="accordion-item">
+        <!-- Exemple Date-picker  -->
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne11"
+            aria-expanded="true" aria-controls="collapseOne11">
+            Exemple Date-picker 
+          </button>
+        </h2>
+        <div id="collapseOne11" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body text-left">
+
+            <label for="date-naissance" class="form-label">Date de naissance</label>
+            <input-datepicker id="date-naissance" disabled-dates.bind="disabledDates"   date.bind="dateNaissance"></input-datepicker>
+    
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <!-- Exemple generic-table -->
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne13"
+            aria-expanded="true" aria-controls="collapseOne13">
+            Exemple LockScreen
+          </button>
+        </h2>
+        <div id="collapseOne13" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body text-left"> 
+            <button class="btn btn-secondary" click.trigger="lockScreen()">Verrouillage</button> 
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <!-- Exemple generic-table -->
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne">
+            Exemple als-generic-table
+          </button>
+        </h2>
+        <div class="accordion-body text-left"> 
+          <button class="btn btn-secondary" click.trigger="LoadData()">LOAD DATA</button> 
+        </div>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body text-left">
+            <generic-table actions.bind="gridActions" searchable.bind="true" 
+            data.bind="dataSource"  filtrable.bind="true" filter-Type.bind="filterType"
+              refreshable.bind="true" on-change.call="bindGrid($event)">
+
+
+              <generic-column header.bind="'Text'" field.bind="'text'" sortable.bind="true" filtrable.bind="true"
+                type.bind="'text'"></generic-column>
+
+              <generic-column header.bind="'Text Large'" field.bind="'textlg'" ellipsis.bind="true"
+                sortable.bind="false" filtrable.bind="true" type.bind="'text'"></generic-column>
+
+              <generic-column header.bind="'Date'" field.bind="'dateCreation'" sortable.bind="true"
+                filtrable.bind="true" date-Format.bind="'DD/MM/YYYY'" type.bind="'date'"></generic-column>
+
+              <generic-column header.bind="'Text with Badges'" field.bind="'badge'" sortable.bind="true"
+                filtrable.bind="true" element-Class.bind="'primary'" type.bind="'text'"></generic-column>
+
+              <generic-column header.bind="'Email Action'" field.bind="'mail'" sortable.bind="true"
+                filtrable.bind="true" display.bind="true" type.bind="'email'"></generic-column>
+
+              <generic-column header.bind="'Websites Links'" field.bind="'website'" sortable.bind="true"
+                filtrable.bind="true" type.bind="'link'"></generic-column>
+
+              <generic-column header.bind="'Aurelia Redirect'" field.bind="'actionLink'" sortable.bind="true"
+                action.bind="{ handler: showAlert }" element-Class.bind="'light text-dark p-2 bi bi-people'"
+                type.bind="'linkAction'"></generic-column>
+
+              <generic-column header.bind="'Enum with Badges'" field.bind="'badgeEnum'" filtrable.bind="true"
+                element-Class.bind="'warning text-dark'" enum-Array.bind="BadgeArrayData"
+                type.bind="'enum'"></generic-column>
+
+              <generic-column header.bind="'Boolean'" field.bind="'icon'" attribute.bind="'badgeC'"
+                filtrable.bind="true" type.bind="'boolean'" icon-Class.bind="'circle'"></generic-column>
+              <generic-column header.bind="'icon'" field.bind="'icon'" attribute.bind="'badgeC'"
+                filtrable.bind="true" type.bind="'icon'" icon-Class.bind="'person'"></generic-column>
+            </generic-table>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Exemple loading-indicator
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <code>&lt;loading-indicator class=&quot;loading-indicator w-100&quot; loading.bind=&quot;apiCall.inProgress || connection.inProgress&quot;&gt;&lt;/loading-indicator&gt;</code>
+            <hr>
+            <loading-indicator class="loading-indicator w-100" loading.bind="true"></loading-indicator>
+
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Exemple select
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <!-- Exemple select -->
+
+            <code>&lt;simple-select placeholder=&quot;S&eacute;lectionnez message...&quot; datasource.bind=&quot;dataSource&quot; value.bind=&quot;selectedMessage&quot;&gt; &lt;template replace-part=&quot;itemTemplate&quot;&gt; &lt;p class=&quot;fw-semibold text-start m-0&quot;&gt;${item.message}&lt;/p&gt; &lt;/template&gt; &lt;/simple-select&gt;</code>
+            <hr>
+
+            <simple-select id="select-departement" placeholder="Sélectionnez le département..." value-key="code" class="form-select"
+              label-key="description" datasource.bind="dataSourceSimpleSelect" value.bind="selectedMessage">
+              <template replace-part="itemTemplate">
+                <div class="d-flex justify-content-between flex-nowrap">
+                  <div class="fw-semibold m-0">${item.code}</div>
+                  <div class="fw-light ps-2 m-0"><code>${item.description}</code></div>
+                </div>
+              </template>
+            </simple-select>
+
+            <hr>
+            Filterable select
+            <hr>
+
+            <filterable-select id="select-departement" placeholder="Sélectionnez le département..." value-key="code" class="form-select"
+              label-key="description" datasource.bind="dataSourceSimpleSelect" value.bind="selectedMessage">
+              <template replace-part="itemTemplate">
+                <div class="d-flex justify-content-between flex-nowrap">
+                  <div class="fw-semibold m-0">${item.code}</div>
+                  <div class="fw-light ps-2 m-0"><code>${item.description}</code></div>
+                </div>
+              </template>
+            </filterable-select>
+
+            <hr>
+            Badges select
+            <hr>
+
+            <badges-select id="select-departement" placeholder="Sélectionnez le département..." value-key="code" class="form-select"
+              label-key="description" datasource.bind="dataSourceSimpleSelect" value.bind="selectedMessage">
+              <template replace-part="itemTemplate">
+                <div class="d-flex justify-content-between flex-nowrap">
+                  <div class="fw-semibold m-0">${item.code}</div>
+                  <div class="fw-light ps-2 m-0"><code>${item.description}</code></div>
+                </div>
+              </template>
+            </badges-select>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
+            Exemple autocomplete
+          </button>
+        </h2>
+        <div id="collapseThree1" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <!-- Exemple autocomplete -->
+
+            <code>&lt;simple-select placeholder=&quot;S&eacute;lectionnez message...&quot; datasource.bind=&quot;dataSource&quot; value.bind=&quot;selectedMessage&quot;&gt; &lt;template replace-part=&quot;itemTemplate&quot;&gt; &lt;p class=&quot;fw-semibold text-start m-0&quot;&gt;${item.message}&lt;/p&gt; &lt;/template&gt; &lt;/simple-select&gt;</code>
+            <hr> 
+            <form no-submit>
+              <label for="ac-utilisateur">Autocomplete Utilisateur</label>
+              <auto-complete
+                id="ac-utilisateur"
+                class="form-control"
+                controller.bind="utilisateurAutoCompleteController"
+                delay="700"
+                value-key="code"
+                label-key="description"
+                value.bind="selectedMessage"
+                placeholder="Nom de l'utilisateur...">
+                <template replace-part="itemTemplate">
+                  <p class="fw-semibold text-start m-0">${item.code}</p>
+                  <p class="fw-light text-end m-0"><code>${item.description}</code></p>
+                </template>
+              </auto-complete> 
+            </form>
+            <hr> 
+            <form no-submit>
+              <label for="bac-utilisateur">Badges Utilisateurs</label>
+              <badges-auto-complete
+                id="bac-utilisateur"
+                class="form-control"
+                controller.bind="utilisateurAutoCompleteController"
+                delay="500"
+                value-key="code"
+                label-key="description"
+                values.bind="selectedMessages"
+                placeholder="Nom de l'utilisateur...">
+                <template replace-part="itemTemplate">
+                  <p class="fw-semibold text-start m-0">${item.code}</p>
+                  <p class="fw-light text-end m-0"><code>${item.description}</code></p>
+                </template>
+              </badges-auto-complete> 
+            </form>
+ 
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
+            Exemple breadcrumbs
+          </button>
+        </h2>
+        <div id="collapseThree1" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <code>&lt;breadcrumbs&gt;&lt;/breadcrumbs&gt;</code>
+            <hr>
+            <breadcrumbs></breadcrumbs>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree2" aria-expanded="false" aria-controls="collapseThree2">
+            Exemple lock
+          </button>
+        </h2>
+        <div id="collapseThree2" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            In order to lock the screen , try to click on the badge button of the table ( column actions )
+            <hr>
+            <code>&lt;lock locked.bind=&quot;lock.isLocked&quot;&gt;&lt;/lock&gt;</code>
+            <hr>
+
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+            Exemple environment-ribbon
+          </button>
+        </h2>
+        <div id="collapseThree3" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            the ribbon is displayed enjoy it.
+            <hr>
+            <!-- Exemple environment-ribbon -->
+            <code>&lt;environment-ribbon
+              if.bind=&quot;environment && environment.type != 'prod'&quot;
+              environment.one-time=&quot;environment&quot;
+              class=&quot;d-none d-md-block&quot;
+              position=&quot;top-left&quot;&gt;&lt;/environment-ribbon&gt;</code>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

@@ -1,0 +1,14 @@
+   
+<template> 
+  <require from="./date-filter.css"></require>
+   
+      <input type="text" name="datepicker-input"  
+      placeholder="Filtrer par ${column.header} ..."
+      name="datepicker-input" 
+      id="date_${uniqueId}" 
+      class="form-control" 
+      value.bind="column.filterValue" 
+      change.delegate="onDateFilterChange($event)">
+    
+  
+</template>

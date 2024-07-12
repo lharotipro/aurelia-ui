@@ -1,0 +1,9 @@
+<template>  
+  <span if.bind="!isTooltipEnabled" class.bind="getElementClass(column.attribute ? item[column.field][column.attribute] : item[column.field])">
+    ${column.attribute ? item[column.field][column.attribute] : item[column.field]}</span>
+    <span if.bind="isTooltipEnabled" 
+    class.bind="getElementClass(column.attribute ? item[column.field][column.attribute] : item[column.field])"
+    data-bs-toggle="tooltip" style="cursor: pointer !important;"
+    title="${column.attribute ? item[column.field][column.attribute] : item[column.field]}">
+    ${ isIconClassPresent ? '' : (column.attribute ? item[column.field][column.attribute] : item[column.field])}</span>
+</template>

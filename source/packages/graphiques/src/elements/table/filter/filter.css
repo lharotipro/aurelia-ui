@@ -1,0 +1,10 @@
+.btn.show {
+  border: none !important;
+}
+.btn {
+  cursor: pointer !important;
+}
+
+.btn-light{
+  border-color :#b5b7b9 !important;
+}

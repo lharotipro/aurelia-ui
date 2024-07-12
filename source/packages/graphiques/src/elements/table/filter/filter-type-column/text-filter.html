@@ -1,0 +1,8 @@
+ 
+<template>
+  <input type="text" id="filterInput_${uniqueId}" 
+  class="form-control" 
+  placeholder="Filtrer par ${column.header} ..." 
+  value.bind="column.filterValue" 
+  input.delegate="onInputChange()" />
+</template>

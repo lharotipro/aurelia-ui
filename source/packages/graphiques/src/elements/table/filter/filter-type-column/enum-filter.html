@@ -1,0 +1,11 @@
+<template>  
+  <simple-select class="mb-3"  id="filterSelect_${uniqueId}"  placeholder="Sélectionnez votre filtre ..."
+     value-Key="label"
+    label-key="label" datasource.bind="column.enumArray" value.bind="selectedEnum">
+    <template replace-part="itemTemplate">
+      <div class="d-flex justify-content-between flex-nowrap">
+        <div class="fw-semibold m-0 ${item.class}" style="cursor: pointer !important;"><span class="ms-1">${item.label}</span></div>
+      </div>
+    </template>
+  </simple-select>
+</template>

@@ -1,0 +1,15 @@
+<template>  
+  <require from="../generic-table.css"></require>
+  <span if.bind="column.ellipsis" data-bs-toggle="tooltip" 
+        data-bs-placement="bottom" 
+        title="${column.attribute ? item[column.field][column.attribute] : item[column.field]}"  
+        style="max-width: 250px;cursor:pointer;" 
+        class="d-inline-block text-truncate ${column.elementClass ? 'badge bg-' + column.elementClass : ''}">
+        ${column.attribute ? item[column.field][column.attribute] : item[column.field]}
+  </span>
+  <span if.bind="!column.ellipsis" 
+        class="${column.elementClass ? 'badge bg-' + column.elementClass : ''}">
+        ${column.attribute ? item[column.field][column.attribute] : item[column.field]}
+  </span>
+
+</template>

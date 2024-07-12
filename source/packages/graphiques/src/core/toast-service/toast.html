@@ -1,0 +1,43 @@
+<template>
+  <style>
+    .toast {
+      width: auto !important;
+      max-width: 750px !important;
+      min-width: 360px !important;
+    }
+
+    .toast-icon-h3 {
+      height: 20px;
+      padding: 0;
+      margin: -12px 0 0 0;
+    }
+    .toast-header {
+      padding-left: 15px !important;
+      padding-right: 30px !important;
+    }
+    .toast-text {
+      font-size: 13px;
+      font-weight: 600;
+    }
+  </style>
+  <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 2000">
+    <div class="toast-header ${type} p-1">
+      <h4 class="toast-icon-h5">
+        <span class="badge text-dark p-0 m-0 me-2">
+          <i if.bind="type == 'bg-warning'" class="bi bi-exclamation-triangle"></i>
+          <strong><i if.bind="type == 'bg-danger'" class="bi bi-exclamation-circle"></i></strong>
+          <i if.bind="type == 'bg-info'" class="bi bi-info-square"></i>
+          <i if.bind="type == 'bg-success'" class="bi bi-check-square"></i>
+        </span>
+      </h4>
+      <strong if.bind="type == 'bg-warning'" class="me-auto toast-text">Alerte</strong>
+      <strong if.bind="type == 'bg-danger'" class="me-auto toast-text">Une erreur s'est produite</strong>
+      <strong if.bind="type == 'bg-info'" class="me-auto toast-text">Information</strong>
+      <strong if.bind="type == 'bg-success'" class="me-auto toast-text">Opération réussie</strong>
+
+      <small class="text-muted">A l'instant</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body toast-text p-2 ps-3" innerhtml="${message}"></div>
+  </div>
+</template>

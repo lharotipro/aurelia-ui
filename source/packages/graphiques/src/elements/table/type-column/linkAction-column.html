@@ -1,0 +1,4 @@
+<template>
+  <a click.delegate="executeAction(item, column.action)"  
+  class="${column.elementClass ? 'badge bg-' + column.elementClass :'' }" style="cursor: pointer;">${column.attribute ? item[column.field][column.attribute] : item[column.field]}</a>
+</template>

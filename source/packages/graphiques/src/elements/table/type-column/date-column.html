@@ -1,0 +1,4 @@
+<template>
+  <require from="../../../value-converters/date-format"></require>
+  ${column.attribute ? item[column.field][column.attribute] : item[column.field]  | dateFormat:format}
+</template>

@@ -1,0 +1,6 @@
+<template>
+  <i if.bind="column.showIconTooltip === false" class="bi bi-${column.iconClass}"></i>
+  <i if.bind="column.showIconTooltip === true" class="bi bi-${column.iconClass} pointer"
+  data-bs-toggle="tooltip" data-bs-placement="${column.iconTooltipPosition}" 
+  title="${column.iconTooltipText ? column.iconTooltipText : (column.attribute ? item[column.field][column.attribute] : item[column.field])}"></i> 
+</template>

@@ -1,0 +1,56 @@
+ 
+
+ 
+<template>
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch"  name="checkbox-input" 
+    id="boolean_${uniqueId}"  if.bind="!isChecked"
+    class="form-control"  click.delegate="onCheckBoxChange()" 
+    checked.bind="false">
+    <input class="form-check-input" type="checkbox" role="switch"  name="checkbox-input" 
+    id="boolean_${uniqueId}"  if.bind="isChecked"
+    class="form-control"  click.delegate="onCheckBoxChange()" 
+    checked.bind="true">
+    <label class="form-check-label me-3" for="boolean_${uniqueId}">
+      Filtrer par ${column.header}
+    </label>
+  </div>
+<!-- 
+  <div class="row py-2 d-flex">
+    <label for="appCode" class="form-label col-12">Filtrer par ${column.header}</label>
+    
+      <div class="form-check col-auto me-4">
+        <input checked
+          class="form-check-input" click.delegate="onCheckBoxChange()"
+          type="radio"
+          name="flexRadio"
+          id="flexRadioIndetermine" 
+          value="'NA'"
+          checked.bind="value" />
+        <label class="form-check-label" for="flexRadioIndetermine"><i class="bi bi-slash-circle text-dark"></i></label>
+      </div>
+      <div class="form-check col-auto me-4">
+        <input 
+          class="form-check-input" click.delegate="onCheckBoxChange()"
+          type="radio"
+          name="flexRadio"
+          id="flexRadioVrai" 
+          value="'true'"
+          checked.bind="value" />
+        <label class="form-check-label" for="flexRadioVrai"><i class="bi bi-check-circle text-success"></i></label>
+      </div>
+      <div class="form-check col-auto me-4">
+        <input
+          class="form-check-input" click.delegate="onCheckBoxChange()"
+          type="radio"
+          name="flexRadio"
+          id="flexRadioFaux"
+          value="'false'" 
+          checked.bind="value" />
+        <label class="form-check-label" for="flexRadioFaux"><i class="bi bi-x-circle text-danger"></i></label>
+      </div>
+    
+    
+  </div> -->
+</template>
+

@@ -1,0 +1,141 @@
+<template>
+  <require from="./generic-table.css"></require>
+
+  <div class="table-responsive container-fluid" show.bind="data">
+    <!-- TABLE DATA // SEARCH // REFRESH BUTTON -->
+    <div class="row d-flex justify-content-between mb-2">
+      <div class="col-auto d-flex text-secondary my-auto">
+        ${totalElements}  résultat(s)
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+        <div class="container-fluid">
+          <div class="row d-flex justify-content-end">
+            <div class="input-group col me-1 ms-1 p-0" if.bind="searchable">
+              <span class="input-group-text" id="basic-addon1" data-bs-toggle="tooltip"
+                data-bs-title="Rechercher dans le tableau" data-bs-placement="left"><i
+                  class="bi bi-search fs-6"></i></span>
+              <input type="text" class="form-control" placeholder="Rechercher..." aria-label="Rechercher"
+                aria-describedby="basic-addon1" value.bind="searchText & debounce:800" />
+            </div>
+            <button click.delegate="refreshTable()" class="btn btn-outline me-1 ms-1 table-btn col-auto" type="button"
+              data-bs-toggle="tooltip" data-bs-title="Actualiser le tableau" data-bs-placement="top" id="refreshTable"
+              if.bind="refreshable"><i class="bi bi-arrow-repeat fs-6 p-0"></i></button>
+            <compose if.bind="filterType == 'table' && filtrable" class="col-auto me-1 ms-1 p-0" view-model="../table/filter/filter"
+              model.bind="{data : columns , type : filterType}"></compose>
+            <button click.delegate="clearAllFilters()" class="btn btn-outline me-1 ms-1 table-btn col-auto"
+              type="button" id="ClearAllFilters" data-bs-toggle="tooltip" data-bs-placement="top"
+              data-bs-title="Réinitialiser les filtres"
+              if.bind="clearFilters && (filterValue.length > 0 || filteredColumn.length > 0 || searchText.length > 0) && filterType =='column' ">
+              <i class="bi bi-funnel-fill fs-6 me-2"></i><span class="rounded">Réinitialiser</span>
+
+            </button>
+            <!-- <button click.delegate="exportToCSV()" class="btn btn-outline me-1 ms-1 table-btn col-auto" type="button" id="exportTableCsv"
+              if.bind="exportable && isCsv"><i class="bi bi-filetype-csv fs-6"></i></button>  -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="table table-hover align-middle mb-2">
+      <thead class="">
+        <tr>
+          <template repeat.for="column of columns">
+            <th if.bind="column.display"
+              class="fit ${column.type == 'boolean' ? 'text-center' : ''}"
+              style.bind="column.sortable ? cursorPointer : undefined">
+              <span click.delegate="column.sortable ? sort(column) : null">${column.header}
+                <i if.bind="column.sortable"  style="font-size: 8px;" class="bi bi-caret-down"></i></span>
+              <i if.bind="sortedColumn === column.field && column.sortable "
+                click.delegate="column.sortable ? sort(column) : null"
+                class="float-end bi bi-arrow-${sortDirection === 'ASC' ? 'up' : 'down'} ms-2"></i>
+              <compose
+                if.bind="column.filtrable && filterType == 'column' && column.type != 'icon' && column.type != 'html'"
+                view-model="../table/filter/filter" model.bind="{type : filterType , data : column}"></compose>
+            </th>
+          </template>
+          <th if.bind="actions.length > 0" class="text-center fit autoWidth">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody if.bind="visibleItems.length != 0">
+        <tr repeat.for="item of visibleItems">
+          <slot></slot>
+          <template repeat.for="column of columns">
+            <td class="align-middle  ${column.type == 'boolean' ? 'text-center' : ''}"
+              if.bind="column.type && column.display">
+              <compose view-model="../table/type-column/${column.type}-column"
+                model.bind="{columnProperties: column, columnData: item}"></compose>
+            </td>
+          </template>
+
+          <td if.bind="actions.length > 0" class="align-middle text-center fit">
+            <template repeat.for="action of actions">
+              <template if.bind="action.type === actionTypeOptions.button && action.display">
+                <button click.delegate="executeAction(item, action.action)" class="btn btn-${action.class}">
+                  <i if.bind="action.iconClass"
+                    class="bi bi-${action.iconClass} fs-${action.iconSize} ${action.label ? 'me-1' : ''}"></i>
+                  <span if.bind="action.label" class="fs-${action.iconSize}">${action.label}</span>
+                </button>
+              </template>
+              <template if.bind="action.type === actionTypeOptions.icon && action.display">
+                <i click.delegate="executeAction(item, action.action)"
+                  class="btn btn-${action.class} btn-sm bi bi-${action.iconClass} fs-${action.iconSize} ${action.label ? 'me-1' : ''}"></i>
+                  <span if.bind="action.label" class="fs-${action.iconSize}">${action.label}</span>
+              </template>
+            </template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <span if.bind="visibleItems.length == 0">Aucune donnée disponible</span>
+
+    
+
+  </div>
+
+  <div class="row d-flex justify-content-between ps-4 pe-4" if.bind="visibleItems.length > 0">
+    <div class="col-auto d-flex text-secondary" if.bind="visibleItems.length > 0">
+      <p class="m-auto">Afficher</p>
+      <div class="mx-2">
+        <select class="form-control form-select" value.bind="pageSize" change.delegate="changePageSize($event)">
+          <option repeat.for="item of elementsPerPage" model.bind="item.key" value.bind="item.key">
+            ${item.key}
+          </option>
+        </select>
+      </div>
+
+      <p class="m-auto">résultats par page</p>
+    </div>
+
+    <nav class="col d-flex justify-content-end" aria-label="Pagination">
+      <ul class="pagination mb-0">
+        <li class="page-item">
+          <a class="page-link ${ isFirstButtonDisabled ? 'disabled' : '' }" click.delegate="paginate(1)"
+            tabindex="-1"><span aria-hidden="true"><i class="bi bi-chevron-double-left fs-6"></i></span></a>
+        </li>
+        <li class="page-item">
+          <a class="page-link ${ isFirstButtonDisabled ? 'disabled' : '' }" click.delegate="paginate(currentPage - 1)"
+            tabindex="-1">
+            <!-- <i class="bi bi-chevron-left fs-6"></i> -->
+            Précédente
+          </a>
+        </li>
+        <li class="page-item" repeat.for="page of getVisiblePages" click.delegate="paginate(page)">
+          <a class="page-link ${page === currentPage ? 'active' : ''}">${page}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link ${ isLastButtonDisabled ? 'disabled' : '' }"
+            click.delegate="paginate(currentPage + 1)">
+            <!-- <i class="bi bi-chevron-right fs-6"></i> -->
+             Suivante
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link ${ isLastButtonDisabled ? 'disabled' : '' }" click.delegate="paginate(totalPages)"><i
+              class="bi bi-chevron-double-right fs-6"></i></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</template>

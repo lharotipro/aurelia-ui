@@ -1,0 +1,45 @@
+@import '../../../../../src/common.scss';
+
+//$dp-cell-today-background-color: $secondary;
+//$dp-cell-prevnext-color: lighten($secondary, 15%);
+//$dp-cell-disabled-color: $gray-500;
+
+.datepicker-cell {
+  &.disabled {
+    color: $body-color !important;
+  }
+  &.day {
+    position: relative;
+
+    &.prev,
+    &.next {
+      color: lighten($secondary, 15%) !important;
+    }
+
+    &.disabled::before {
+      position: absolute;
+      opacity: 0.3;
+      width: 25px;
+      top: 5px;
+      content: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Cpath fill=%27%23000000%27 d=%27M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0%27/%3E%3C/svg%3E');
+    }
+
+    &:not(.prev):not(.next) {
+      font-weight: $font-weight-normal;
+    }
+
+    &.today {
+      color: #fff !important;
+      background-color: #20c997 !important;  
+      border: 1px lighten($secondary, 15%) solid;
+
+      &.disabled {
+        &::before {
+          top: 3px;
+        }
+      }
+    }
+  }
+}
+
+@import '../../../../../../../node_modules/vanillajs-datepicker/sass/datepicker-bs5.scss';

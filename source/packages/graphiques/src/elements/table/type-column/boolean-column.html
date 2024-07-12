@@ -1,0 +1,8 @@
+<template>
+  <i if.bind="item[column.field][column.attribute] !== 'NA' && item[column.field] !== 'NA' " class="text-${column.attribute && item[column.field][column.attribute] !== undefined ? (item[column.field][column.attribute] ? 'success' : 'danger') : (item[column.field] ? 'success' : 'danger')} 
+            bi bi-${column.attribute && item[column.field][column.attribute] !== undefined ? (item[column.field][column.attribute] ? 'check-' : 'x-') : (item[column.field] ? 'check-' : 'x-')}${column.iconClass} 
+            fs-${column.iconSize}">
+  </i>
+  <i if.bind="item[column.field][column.attribute] === 'NA' ||  item[column.field]  === 'NA'" class="text-dark bi bi-slash-circle fs-${column.iconSize}" data-bs-toggle="tooltip"  data-bs-title="Indéterminé">
+  </i>
+</template>
